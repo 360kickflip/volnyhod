@@ -822,3 +822,30 @@ label.required::after, .required-mark { content: ' *'; color: var(--vh-danger); 
 /* Round avatar in stat */
 .vh-stat .vh-stat__icon { margin-bottom: .85rem; }
 .vh-stat--center { align-items: center; text-align: center; }
+
+
+
+/* ==========================================================================
+   REFERRAL PROGRAM
+   ========================================================================== */
+.vh-promo-code {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--vh-surface);
+    border: 2px dashed var(--vh-primary);
+    border-radius: var(--vh-radius);
+    padding: .65rem 1rem;
+}
+.vh-promo-code code {
+    font-size: 1.4rem; font-weight: 800; color: var(--vh-primary-dark);
+    font-family: 'Inter', monospace; letter-spacing: .05em;
+    background: transparent;
+}
+
+.vh-ref-banner {
+    background: linear-gradient(135deg, var(--vh-primary), #00a8a8);
+    color: #fff; border-radius: var(--vh-radius-lg);
+    padding: 1rem 1.25rem;
+    display: flex; gap: .85rem; align-items: center;
+    box-shadow: 0 8px 24px rgba(var(--vh-primary-rgb), .35);
+}
+.vh-ref-banner i { font-size: 1.5rem; }

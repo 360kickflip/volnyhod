@@ -4,11 +4,30 @@
 /** @var app\models\Tariff[] $tariffs */
 /** @var app\models\Review[] $reviews */
 
+use app\components\ReferralBootstrap;
+use app\models\Setting;
+use app\models\User;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = 'Вольный Ход — Каршеринг нового поколения';
+
+// Если пришёл по реф-ссылке — показываем промо-баннер
+$refCode = ReferralBootstrap::getCookieCode();
+$refUser = $refCode && Yii::$app->user->isGuest ? User::findByReferralCode($refCode) : null;
+$bonusReferred = (float)Setting::get('referral_bonus_referred', 300);
 ?>
+
+<?php if ($refUser): ?>
+    <div class="vh-ref-banner mb-3 fade-up">
+        <i class="fa-solid fa-gift"></i>
+        <div class="flex-grow-1">
+            <div class="fw-bold">Вас пригласил <?= Html::encode($refUser->name ?: 'друг') ?> 🎉</div>
+            <div class="small" style="opacity:.9;">Зарегистрируйтесь и получите <strong><?= Yii::$app->formatter->asCurrency($bonusReferred) ?></strong> на баланс после первой поездки</div>
+        </div>
+        <a href="<?= Url::to(['/site/signup']) ?>" class="btn btn-light btn-sm">Регистрация</a>
+    </div>
+<?php endif ?>
 
 <!-- HERO -->
 <section class="vh-hero mt-3">

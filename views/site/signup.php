@@ -35,6 +35,21 @@ $this->title = 'Регистрация';
         ->checkbox(['class' => 'form-check-input'], false)
         ->label('Я принимаю <a href="' . Url::to(['/page/view', 'slug' => 'terms']) . '" target="_blank">правила сервиса</a> и <a href="' . Url::to(['/page/view', 'slug' => 'privacy']) . '" target="_blank">политику конфиденциальности</a>', ['class' => 'form-check-label']) ?>
 
+    <details class="mb-3 small">
+        <summary class="text-soft" style="cursor:pointer;">У меня есть реферальный код</summary>
+        <div class="mt-2">
+            <?= $form->field($model, 'referral_code', ['options' => ['class' => 'mb-0']])->textInput([
+                'placeholder' => 'Например, IVAN-7K2X',
+                'style' => 'text-transform:uppercase',
+            ])->label(false) ?>
+            <?php if ($model->referral_code): ?>
+                <div class="alert alert-success small mt-2 mb-0">
+                    <i class="fa-solid fa-gift me-1"></i> Применён код <strong><?= Html::encode($model->referral_code) ?></strong> — вы получите бонус после первой поездки!
+                </div>
+            <?php endif ?>
+        </div>
+    </details>
+
     <div class="d-grid mt-3">
         <?= Html::submitButton('Создать аккаунт', ['class' => 'btn btn-primary btn-lg']) ?>
     </div>

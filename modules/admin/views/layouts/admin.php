@@ -34,6 +34,7 @@ $menu = [
     ['title' => 'Автомобили', 'icon' => 'fa-car', 'url' => ['/admin/car/index'], 'active' => $ctrl === 'car'],
     ['title' => 'Тарифы', 'icon' => 'fa-tags', 'url' => ['/admin/tariff/index'], 'active' => $ctrl === 'tariff'],
     ['title' => 'Промокоды', 'icon' => 'fa-percent', 'url' => ['/admin/promo-code/index'], 'active' => $ctrl === 'promo-code'],
+    ['title' => 'Реферальная программа', 'icon' => 'fa-gift', 'url' => ['/admin/referral/index'], 'active' => $ctrl === 'referral'],
 
     ['label' => 'Клиенты'],
     ['title' => 'Пользователи', 'icon' => 'fa-users', 'url' => ['/admin/user/index'], 'active' => $ctrl === 'user'],

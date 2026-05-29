@@ -128,6 +128,76 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->auth_key === $authKey;
     }
 
+    // ===== Реферальная программа =====
+    public static function findByReferralCode($code)
+    {
+        if (!$code) return null;
+        return static::findOne(['referral_code' => strtoupper(trim($code)), 'status' => self::STATUS_ACTIVE]);
+    }
+
+    public function generateReferralCode()
+    {
+        $base = '';
+        if ($this->name) {
+            $first = preg_replace('/[^A-Za-z]/u', '', self::translitName(explode(' ', $this->name)[0] ?? ''));
+            $base = mb_strtoupper(mb_substr($first, 0, 5));
+        }
+        if (!$base) $base = 'VH';
+        $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        for ($i = 0; $i < 50; $i++) {
+            $suffix = '';
+            for ($j = 0; $j < 4; $j++) $suffix .= $alphabet[random_int(0, strlen($alphabet) - 1)];
+            $code = $base . '-' . $suffix;
+            if (!static::findOne(['referral_code' => $code])) {
+                $this->referral_code = $code;
+                return $code;
+            }
+        }
+        $this->referral_code = 'VH-' . substr(md5(uniqid()), 0, 8);
+        return $this->referral_code;
+    }
+
+    private static function translitName(string $s): string
+    {
+        $map = [
+            'а'=>'a','б'=>'b','в'=>'v','г'=>'g','д'=>'d','е'=>'e','ё'=>'e','ж'=>'zh','з'=>'z','и'=>'i','й'=>'i','к'=>'k','л'=>'l','м'=>'m','н'=>'n','о'=>'o','п'=>'p','р'=>'r','с'=>'s','т'=>'t','у'=>'u','ф'=>'f','х'=>'h','ц'=>'c','ч'=>'ch','ш'=>'sh','щ'=>'sh','ы'=>'y','э'=>'e','ю'=>'u','я'=>'ya','ъ'=>'','ь'=>'',
+            'А'=>'A','Б'=>'B','В'=>'V','Г'=>'G','Д'=>'D','Е'=>'E','Ё'=>'E','Ж'=>'Zh','З'=>'Z','И'=>'I','Й'=>'I','К'=>'K','Л'=>'L','М'=>'M','Н'=>'N','О'=>'O','П'=>'P','Р'=>'R','С'=>'S','Т'=>'T','У'=>'U','Ф'=>'F','Х'=>'H','Ц'=>'C','Ч'=>'Ch','Ш'=>'Sh','Щ'=>'Sh','Ы'=>'Y','Э'=>'E','Ю'=>'U','Я'=>'Ya','Ъ'=>'','Ь'=>'',
+        ];
+        return strtr($s, $map);
+    }
+
+    public function getReferralLink()
+    {
+        return \Yii::$app->urlManager->createAbsoluteUrl(['/site/index', 'ref' => $this->referral_code]);
+    }
+
+    public function getReferralCount()
+    {
+        return (int)static::find()->where(['referred_by_user_id' => $this->id])->count();
+    }
+
+    public function getReferralEarnings()
+    {
+        return (float)\app\models\ReferralReward::find()
+            ->where(['referrer_id' => $this->id, 'status' => \app\models\ReferralReward::STATUS_PAID])
+            ->sum('amount_referrer');
+    }
+
+    public function getReferrals()
+    {
+        return $this->hasMany(self::class, ['referred_by_user_id' => 'id']);
+    }
+
+    public function getReferralRewards()
+    {
+        return $this->hasMany(\app\models\ReferralReward::class, ['referrer_id' => 'id'])->orderBy(['created_at' => SORT_DESC]);
+    }
+
+    public function getReferrer()
+    {
+        return $this->hasOne(self::class, ['id' => 'referred_by_user_id']);
+    }
+
     // ===== Helpers =====
     public static function findByEmail($email)
     {

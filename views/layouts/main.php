@@ -87,6 +87,7 @@ $navItems = [
                             <li><hr class="dropdown-divider my-2"></li>
                             <li><a class="dropdown-item" href="<?= Url::to(['/profile/index']) ?>"><i class="fa-solid fa-user"></i>Профиль</a></li>
                             <li><a class="dropdown-item" href="<?= Url::to(['/balance/index']) ?>"><i class="fa-solid fa-wallet"></i>Баланс</a></li>
+                            <li><a class="dropdown-item" href="<?= Url::to(['/referral/index']) ?>"><i class="fa-solid fa-gift text-warning"></i>Пригласить друзей</a></li>
                             <li><a class="dropdown-item" href="<?= Url::to(['/support/index']) ?>"><i class="fa-solid fa-life-ring"></i>Поддержка</a></li>
                             <li><a class="dropdown-item" href="<?= Url::to(['/faq/index']) ?>"><i class="fa-solid fa-circle-question"></i>FAQ</a></li>
                             <?php if ($user->isAdmin()): ?>
@@ -137,6 +138,7 @@ $navItems = [
                 </a>
             <?php endforeach ?>
             <a href="<?= Url::to(['/balance/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-wallet"></i>Баланс</a>
+            <a href="<?= Url::to(['/referral/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-gift"></i>Пригласить друзей</a>
             <a href="<?= Url::to(['/notification/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-bell"></i>Уведомления <?php if ($unread): ?><span class="badge bg-danger ms-auto"><?= $unread ?></span><?php endif ?></a>
             <a href="<?= Url::to(['/support/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-life-ring"></i>Поддержка</a>
             <a href="<?= Url::to(['/profile/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-user"></i>Профиль</a>

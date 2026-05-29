@@ -113,6 +113,9 @@ class BookingService
                 $car->getFullName() . ' • ' . Yii::$app->formatter->asCurrency($finalCost),
                 '/trips/' . $booking->id, 'fa-check-circle');
 
+            // Реферальная награда — после первой завершённой поездки
+            self::tryPayReferralReward($user, $booking);
+
             $tr->commit();
             return [true, $booking];
         } catch (\Throwable $e) {
@@ -184,5 +187,87 @@ class BookingService
         $c->amount = $amount;
         $c->created_at = date('Y-m-d H:i:s');
         return $c->save(false);
+    }
+
+    /**
+     * Выплачивает реф-бонус приглашающему и приглашённому, если это первая
+     * успешная поездка и бонус ещё не выдан.
+     */
+    private static function tryPayReferralReward(User $user, Booking $booking): void
+    {
+        if ($user->referral_bonus_paid) return;
+        if (!$user->referred_by_user_id) return;
+
+        $reward = \app\models\ReferralReward::findOne([
+            'referred_id' => $user->id,
+            'status' => \app\models\ReferralReward::STATUS_PENDING,
+        ]);
+        if (!$reward) return;
+
+        $referrer = User::findOne($reward->referrer_id);
+        if (!$referrer || $referrer->status !== User::STATUS_ACTIVE) {
+            $reward->status = \app\models\ReferralReward::STATUS_CANCELLED;
+            $reward->save(false);
+            $user->referral_bonus_paid = 1;
+            $user->save(false);
+            return;
+        }
+
+        $now = date('Y-m-d H:i:s');
+
+        // Бонус приглашённому
+        if ($reward->amount_referred > 0) {
+            $user->balance = (float)$user->balance + (float)$reward->amount_referred;
+            $tx = new Transaction([
+                'user_id' => $user->id,
+                'booking_id' => $booking->id,
+                'type' => Transaction::TYPE_BONUS,
+                'amount' => $reward->amount_referred,
+                'balance_after' => $user->balance,
+                'status' => Transaction::STATUS_COMPLETED,
+                'payment_method' => 'bonus',
+                'description' => 'Реферальный бонус (приглашён ' . ($referrer->name ?: $referrer->email) . ')',
+                'created_at' => $now,
+                'completed_at' => $now,
+            ]);
+            $tx->save(false);
+        }
+
+        // Бонус приглашающему
+        if ($reward->amount_referrer > 0) {
+            $referrer->balance = (float)$referrer->balance + (float)$reward->amount_referrer;
+            $referrer->save(false);
+            $tx = new Transaction([
+                'user_id' => $referrer->id,
+                'type' => Transaction::TYPE_BONUS,
+                'amount' => $reward->amount_referrer,
+                'balance_after' => $referrer->balance,
+                'status' => Transaction::STATUS_COMPLETED,
+                'payment_method' => 'bonus',
+                'description' => 'Реферальный бонус (друг ' . ($user->name ?: $user->email) . ' совершил первую поездку)',
+                'created_at' => $now,
+                'completed_at' => $now,
+            ]);
+            $tx->save(false);
+
+            Notification::send($referrer->id, Notification::TYPE_PROMO,
+                'Друг совершил первую поездку!',
+                'Вам начислено ' . Yii::$app->formatter->asCurrency($reward->amount_referrer) . ' за приглашение ' . ($user->name ?: 'друга'),
+                '/profile/referrals', 'fa-gift');
+        }
+
+        Notification::send($user->id, Notification::TYPE_PROMO,
+            'Бонус начислен',
+            'Спасибо за первую поездку! На баланс зачислено ' . Yii::$app->formatter->asCurrency($reward->amount_referred),
+            '/balance', 'fa-gift');
+
+        $reward->status = \app\models\ReferralReward::STATUS_PAID;
+        $reward->booking_id = $booking->id;
+        $reward->paid_at = $now;
+        $reward->save(false);
+
+        $user->balance = $user->balance; // already updated
+        $user->referral_bonus_paid = 1;
+        $user->save(false);
     }
 }
