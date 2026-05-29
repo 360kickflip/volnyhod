@@ -234,9 +234,9 @@ $bonusReferred = (float)Setting::get('referral_bonus_referred', 300);
         <?php
         // Если нет настоящих отзывов в БД — показываем дефолтные
         $defaultReviews = [
-            ['Анна К.',     'Менеджер',         5, 'Пользуюсь полгода — это просто космос! Машины всегда чистые, поддержка отзывчивая. Особенно радует поминутная оплата: за 20 минут до метро вышло 200 ₽.', 'fa-female'],
-            ['Дмитрий П.',  'IT-специалист',    5, 'Регистрация заняла буквально пару часов. С тех пор езжу только так. Цены прозрачные, никаких сюрпризов в чеке. Рекомендую всем!',                            'fa-male'],
-            ['Мария С.',    'Студентка',        5, 'Удобно ездить из института домой, особенно поздно вечером. Дешевле такси, машины качественные, ничего не ломается. Спасибо!',                                'fa-female'],
+            ['Анна К.',     'Менеджер',         5, 'Пользуюсь полгода — это просто космос! Машины всегда чистые, поддержка отзывчивая. Особенно радует поминутная оплата: за 20 минут до метро вышло 200 ₽.', 'clients/anna.jpg'],
+            ['Дмитрий П.',  'IT-специалист',    5, 'Регистрация заняла буквально пару часов. С тех пор езжу только так. Цены прозрачные, никаких сюрпризов в чеке. Рекомендую всем!',                            'clients/dmitry.jpg'],
+            ['Мария С.',    'Студентка',        5, 'Удобно ездить из института домой, особенно поздно вечером. Дешевле такси, машины качественные, ничего не ломается. Спасибо!',                                'clients/maria.jpg'],
         ];
         $displayReviews = $reviews ?: $defaultReviews;
         $useReal = !empty($reviews);
@@ -246,9 +246,9 @@ $bonusReferred = (float)Setting::get('referral_bonus_referred', 300);
                 $role = 'Клиент';
                 $rating = $r->rating;
                 $text = $r->text;
-                $iconClass = 'fa-user';
+                $photo = null;
             } else {
-                [$name, $role, $rating, $text, $iconClass] = $r;
+                [$name, $role, $rating, $text, $photo] = $r;
             }
             ?>
             <div class="col-md-4">
@@ -261,9 +261,15 @@ $bonusReferred = (float)Setting::get('referral_bonus_referred', 300);
                         </div>
                         <p class="mb-4"><?= Html::encode($text) ?></p>
                         <div class="d-flex align-items-center gap-2 mt-auto">
-                            <div class="vh-avatar" style="width:42px;height:42px;font-size:14px;">
-                                <i class="fa-solid <?= $iconClass ?>"></i>
-                            </div>
+                            <?php if ($photo): ?>
+                                <img src="<?= Yii::getAlias('@web/img/' . $photo) ?>"
+                                     onerror="this.src='<?= Yii::getAlias('@web/img/clients/placeholder.svg') ?>';"
+                                     alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+                            <?php else: ?>
+                                <div class="vh-avatar" style="width:42px;height:42px;font-size:14px;">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                            <?php endif ?>
                             <div>
                                 <div class="fw-bold small"><?= Html::encode($name) ?></div>
                                 <div class="text-soft" style="font-size:.8rem;"><?= Html::encode($role) ?></div>
@@ -333,12 +339,12 @@ $bonusReferred = (float)Setting::get('referral_bonus_referred', 300);
         <?php
         // Замените на свои логотипы партнёров (web/img/partners/*.png)
         $partners = [
-            ['Сбербанк',     'partners/sberbank.svg'],
-            ['Альфа-Банк',   'partners/alfa.svg'],
-            ['ЮKassa',       'partners/yookassa.svg'],
-            ['Яндекс',       'partners/yandex.svg'],
-            ['ВТБ',          'partners/vtb.svg'],
-            ['ОСАГО',        'partners/osago.svg'],
+            ['Партнёр-Банк',      'partners/sber.svg'],
+            ['Финанс-Альянс',     'partners/alfa.svg'],
+            ['Платёжный сервис',  'partners/yookassa.svg'],
+            ['Карты & API',       'partners/yandex.svg'],
+            ['Банк-Партнёр',      'partners/vtb.svg'],
+            ['Страх-Группа',      'partners/osago.svg'],
         ];
         foreach ($partners as [$name, $img]): ?>
             <div class="col-md-2 col-4 text-center">

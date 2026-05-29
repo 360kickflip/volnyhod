@@ -444,4 +444,15 @@ INSERT INTO `transaction` (`user_id`, `type`, `amount`, `balance_after`, `status
 (2, 'topup', 1500.00, 1500.00, 'completed', 'card',  'Пополнение баланса',  DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY)),
 (2, 'bonus',  100.00, 1600.00, 'completed', 'bonus', 'Приветственный бонус', DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY));
 
+-- ----- ПРИВЯЗКА ФОТО К АВТО -----
+INSERT INTO `car_photo` (`car_id`, `file_path`, `is_main`, `sort_order`, `created_at`) VALUES
+  (1, "car_1_solaris.jpg", 1, 1, NOW()),
+  (2, "car_2_kia.jpg", 1, 1, NOW()),
+  (3, "car_3_polo.jpg", 1, 1, NOW()),
+  (4, "car_4_skoda.jpg", 1, 1, NOW()),
+  (5, "car_5_toyota.jpg", 1, 1, NOW()),
+  (6, "car_6_bmw.jpg", 1, 1, NOW()),
+  (7, "car_7_mercedes.jpg", 1, 1, NOW()),
+  (8, "car_8_logan.jpg", 1, 1, NOW());
+
 SET FOREIGN_KEY_CHECKS = 1;
