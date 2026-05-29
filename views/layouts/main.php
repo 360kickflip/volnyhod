@@ -168,6 +168,8 @@ $navItems = [
     </div>
 </main>
 
+<?= $this->render('@app/views/_partials/_cookie_consent') ?>
+
 <footer class="vh-footer">
     <div class="container-xl">
         <div class="row gy-4">
@@ -203,8 +205,11 @@ $navItems = [
                 <ul>
                     <li><a href="<?= Url::to(['/faq/index']) ?>">FAQ</a></li>
                     <li><a href="<?= Url::to(['/support/index']) ?>">Поддержка</a></li>
-                    <li><a href="<?= Url::to(['/page/view', 'slug' => 'terms']) ?>">Правила</a></li>
-                    <li><a href="<?= Url::to(['/page/view', 'slug' => 'privacy']) ?>">Политика</a></li>
+                    <li><a href="<?= Url::to(['/page/view', 'slug' => 'terms']) ?>">Правила сервиса</a></li>
+                    <li><a href="<?= Url::to(['/page/view', 'slug' => 'user-agreement']) ?>">Пользовательское соглашение</a></li>
+                    <li><a href="<?= Url::to(['/page/view', 'slug' => 'privacy']) ?>">Политика конфиденциальности</a></li>
+                    <li><a href="<?= Url::to(['/page/view', 'slug' => 'cookies']) ?>">Политика cookie</a></li>
+                    <li><button type="button" class="vh-footer__cookie-btn" data-cookie-action="open-settings"><i class="fa-solid fa-cookie-bite me-1"></i> Настройки cookie</button></li>
                 </ul>
             </div>
             <div class="col-lg-4 col-md-6">

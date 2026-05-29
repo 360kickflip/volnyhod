@@ -643,3 +643,117 @@ label.required::after, .required-mark { content: ' *'; color: var(--vh-danger); 
     .vh-header, .vh-footer, .no-print, .btn { display: none !important; }
     .card, .table-card-wrap { box-shadow: none; border: 1px solid #ddd; }
 }
+
+
+
+/* ==========================================================================
+   COOKIE CONSENT
+   ========================================================================== */
+.vh-cookie-banner {
+    position: fixed;
+    bottom: 16px; left: 16px; right: 16px;
+    z-index: 1080;
+    background: var(--vh-surface);
+    border: 1px solid var(--vh-border);
+    border-radius: var(--vh-radius-lg);
+    box-shadow: 0 18px 50px rgba(15, 23, 42, .18), 0 4px 12px rgba(15, 23, 42, .08);
+    padding: 1.1rem 1.25rem;
+    max-width: 980px;
+    margin: 0 auto;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform .35s ease, opacity .25s ease;
+}
+.vh-cookie-banner.is-visible { transform: none; opacity: 1; }
+.vh-cookie-banner__inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+}
+.vh-cookie-banner__icon {
+    width: 56px; height: 56px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 16px;
+    background: var(--vh-primary-light);
+    flex-shrink: 0;
+}
+.vh-cookie-banner__content h6 { font-weight: 700; }
+.vh-cookie-banner__content p { color: var(--vh-text-soft); }
+.vh-cookie-banner__actions {
+    display: flex; gap: .5rem; flex-wrap: wrap; justify-content: flex-end;
+}
+@media (max-width: 767px) {
+    .vh-cookie-banner__inner { grid-template-columns: 1fr; text-align: left; }
+    .vh-cookie-banner__icon { display: none; }
+    .vh-cookie-banner__actions { justify-content: stretch; }
+    .vh-cookie-banner__actions .btn { flex: 1; }
+}
+
+.vh-cookie-cat {
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--vh-border);
+    border-radius: var(--vh-radius);
+    margin-bottom: .75rem;
+    background: var(--vh-surface);
+    transition: border-color .15s, background .15s;
+}
+.vh-cookie-cat:hover { border-color: rgba(var(--vh-primary-rgb), .35); }
+
+/* Footer cookie link button */
+.vh-footer__cookie-btn {
+    background: transparent; border: 0; padding: 0;
+    color: rgba(255, 255, 255, .7); text-decoration: none; font: inherit; cursor: pointer;
+}
+.vh-footer__cookie-btn:hover { color: var(--vh-primary); }
+
+/* Legal pages typography */
+.legal-content { font-size: 1rem; line-height: 1.7; color: var(--vh-text); }
+.legal-content h2 {
+    font-size: 1.45rem; font-weight: 800; margin-top: 2rem; margin-bottom: 1rem;
+    padding-top: .5rem; color: var(--vh-text);
+}
+.legal-content h2:first-child { margin-top: 0; }
+.legal-content h3 { font-size: 1.15rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: .65rem; color: var(--vh-text); }
+.legal-content p { color: var(--vh-text-soft); margin-bottom: 1rem; }
+.legal-content ul, .legal-content ol { padding-left: 1.5rem; margin-bottom: 1rem; color: var(--vh-text-soft); }
+.legal-content li { margin-bottom: .35rem; }
+.legal-content strong { color: var(--vh-text); }
+.legal-content a { color: var(--vh-primary-dark); text-decoration: underline; }
+.legal-content a:hover { color: var(--vh-primary); }
+.legal-content blockquote {
+    border-left: 4px solid var(--vh-primary);
+    background: var(--vh-primary-light);
+    padding: 1rem 1.25rem;
+    border-radius: 0 var(--vh-radius) var(--vh-radius) 0;
+    margin: 1.25rem 0;
+    color: var(--vh-text);
+}
+.legal-content table {
+    width: 100%; border-collapse: collapse; margin-bottom: 1.25rem;
+    font-size: .95rem;
+}
+.legal-content table th, .legal-content table td {
+    border: 1px solid var(--vh-border);
+    padding: .65rem .85rem;
+    text-align: left;
+    vertical-align: top;
+}
+.legal-content table th { background: var(--vh-border-soft); font-weight: 700; }
+.legal-content table tr:nth-child(even) td { background: rgba(247, 249, 252, .55); }
+
+.legal-toc {
+    background: var(--vh-surface);
+    border: 1px solid var(--vh-border);
+    border-radius: var(--vh-radius);
+    padding: 1.25rem;
+    position: sticky;
+    top: 90px;
+}
+.legal-toc h6 { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--vh-muted); margin-bottom: .85rem; }
+.legal-toc a {
+    display: block; padding: .35rem 0; color: var(--vh-text-soft); text-decoration: none;
+    font-size: .9rem; border-left: 2px solid transparent; padding-left: .65rem;
+    transition: all .15s;
+}
+.legal-toc a:hover, .legal-toc a.is-active { color: var(--vh-primary-dark); border-left-color: var(--vh-primary); }
