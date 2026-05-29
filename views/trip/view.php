@@ -12,10 +12,11 @@ use yii\helpers\Url;
 $this->title = 'Поездка #' . $booking->number;
 $car = $booking->car;
 
-// Карта маршрута
+// Яндекс.Карты для маршрута
 if ($booking->start_lat && $booking->end_lat) {
-    $this->registerCssFile('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
-    $this->registerJsFile('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', ['position' => \yii\web\View::POS_END]);
+    $apiKey = Yii::$app->params['yandexMapsApiKey'] ?? '';
+    $ymUrl = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU' . ($apiKey ? '&apikey=' . urlencode($apiKey) : '');
+    $this->registerJsFile($ymUrl, ['position' => \yii\web\View::POS_END]);
 }
 ?>
 
@@ -196,14 +197,20 @@ if ($booking->start_lat && $booking->end_lat):
     $startLat = (float)$booking->start_lat; $startLng = (float)$booking->start_lng;
     $endLat = (float)$booking->end_lat; $endLng = (float)$booking->end_lng;
     $this->registerJs(<<<JS
-const rmap = L.map('route-map').setView([$startLat, $startLng], 13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'© OpenStreetMap'}).addTo(rmap);
-const startIcon = L.divIcon({html:'<div style="background:#10b981;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2);">A</div>',className:'',iconSize:[28,28],iconAnchor:[14,14]});
-const endIcon = L.divIcon({html:'<div style="background:#ef4444;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2);">B</div>',className:'',iconSize:[28,28],iconAnchor:[14,14]});
-L.marker([$startLat, $startLng], {icon:startIcon}).addTo(rmap).bindPopup('Старт');
-L.marker([$endLat, $endLng], {icon:endIcon}).addTo(rmap).bindPopup('Финиш');
-const line = L.polyline([[$startLat, $startLng], [$endLat, $endLng]], {color: '#00c896', weight: 3, dashArray: '6, 6'}).addTo(rmap);
-rmap.fitBounds(line.getBounds(), {padding:[40,40]});
+ymaps.ready(function () {
+    const rmap = new ymaps.Map('route-map', {
+        center: [$startLat, $startLng],
+        zoom: 13,
+        controls: ['zoomControl']
+    });
+    const startPm = new ymaps.Placemark([$startLat, $startLng], { iconCaption: 'A · Старт', balloonContent: 'Точка старта' }, { preset: 'islands#greenStretchyIcon' });
+    const endPm = new ymaps.Placemark([$endLat, $endLng], { iconCaption: 'B · Финиш', balloonContent: 'Точка окончания' }, { preset: 'islands#redStretchyIcon' });
+    const line = new ymaps.Polyline([[$startLat, $startLng], [$endLat, $endLng]], {}, { strokeColor: '#00c896', strokeWidth: 3, strokeStyle: 'dash' });
+    rmap.geoObjects.add(line);
+    rmap.geoObjects.add(startPm);
+    rmap.geoObjects.add(endPm);
+    rmap.setBounds(line.geometry.getBounds(), { checkZoomRange: true, zoomMargin: 50 });
+});
 JS);
 endif;
 ?>

@@ -13,9 +13,10 @@ $car = $booking->car;
 $startedTs = strtotime($booking->started_at);
 $currentCost = $booking->calculateCurrentCost();
 
-// Leaflet для карты локации авто
-$this->registerCssFile('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
-$this->registerJsFile('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', ['position' => \yii\web\View::POS_END]);
+// Яндекс.Карты
+$apiKey = Yii::$app->params['yandexMapsApiKey'] ?? '';
+$ymUrl = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU' . ($apiKey ? '&apikey=' . urlencode($apiKey) : '');
+$this->registerJsFile($ymUrl, ['position' => \yii\web\View::POS_END]);
 ?>
 
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
@@ -140,10 +141,20 @@ $this->registerJsFile('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', ['posit
 $lat = (float)$car->lat;
 $lng = (float)$car->lng;
 if ($lat && $lng):
-    $this->registerJs("
-        const rmap = L.map('rental-map').setView([$lat, $lng], 15);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'© OpenStreetMap'}).addTo(rmap);
-        L.marker([$lat, $lng]).addTo(rmap).bindPopup('" . addslashes(Html::encode($car->address)) . "').openPopup();
-    ");
+    $address = addslashes(Html::encode($car->address));
+    $this->registerJs(<<<JS
+ymaps.ready(function () {
+    const rmap = new ymaps.Map('rental-map', {
+        center: [$lat, $lng],
+        zoom: 15,
+        controls: ['zoomControl', 'geolocationControl']
+    });
+    const pm = new ymaps.Placemark([$lat, $lng], {
+        balloonContent: '$address',
+        hintContent: '$address'
+    }, { preset: 'islands#greenAutoIcon' });
+    rmap.geoObjects.add(pm);
+});
+JS);
 endif;
 ?>

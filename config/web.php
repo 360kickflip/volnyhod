@@ -77,6 +77,7 @@ $config = [
                 'logout' => 'site/logout',
                 'catalog' => 'car/index',
                 'map' => 'map/index',
+                'tariffs' => 'tariff/index',
                 'trips' => 'trip/index',
                 'trips/<id:\d+>' => 'trip/view',
                 'profile' => 'profile/index',

@@ -10,8 +10,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 $this->title = 'История локаций';
-$this->registerCssFile('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
-$this->registerJsFile('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', ['position' => \yii\web\View::POS_END]);
+
+$apiKey = Yii::$app->params['yandexMapsApiKey'] ?? '';
+$ymUrl = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU' . ($apiKey ? '&apikey=' . urlencode($apiKey) : '');
+$this->registerJsFile($ymUrl, ['position' => \yii\web\View::POS_END]);
 ?>
 
 <form method="get" class="card mb-3">
@@ -74,18 +76,28 @@ $this->registerJsFile('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', ['posit
     $pointsJson = json_encode($points);
     $center = $points[0] ?? ['lat' => $car->lat ?: 55.7558, 'lng' => $car->lng ?: 37.6173];
     $this->registerJs(<<<JS
-const tmap = L.map('track-map').setView([{$center['lat']}, {$center['lng']}], 12);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'© OpenStreetMap'}).addTo(tmap);
-const points = $pointsJson;
-if (points.length > 1) {
-    const latlngs = points.map(p => [p.lat, p.lng]);
-    const line = L.polyline(latlngs, {color:'#00c896', weight: 4}).addTo(tmap);
-    tmap.fitBounds(line.getBounds(), {padding: [40, 40]});
-    L.marker(latlngs[0]).bindPopup('Старт').addTo(tmap);
-    L.marker(latlngs[latlngs.length - 1]).bindPopup('Финиш').addTo(tmap);
-} else if (points.length === 1) {
-    L.marker([points[0].lat, points[0].lng]).addTo(tmap);
-}
+ymaps.ready(function () {
+    const tmap = new ymaps.Map('track-map', {
+        center: [{$center['lat']}, {$center['lng']}],
+        zoom: 12,
+        controls: ['zoomControl', 'typeSelector']
+    });
+    const points = $pointsJson;
+    if (points.length > 1) {
+        const coords = points.map(p => [p.lat, p.lng]);
+        const polyline = new ymaps.Polyline(coords, {}, {
+            strokeColor: '#00c896',
+            strokeWidth: 4,
+            strokeOpacity: 0.85
+        });
+        tmap.geoObjects.add(polyline);
+        tmap.geoObjects.add(new ymaps.Placemark(coords[0], { balloonContent: 'Старт' }, { preset: 'islands#greenCircleDotIcon' }));
+        tmap.geoObjects.add(new ymaps.Placemark(coords[coords.length - 1], { balloonContent: 'Финиш' }, { preset: 'islands#redCircleDotIcon' }));
+        tmap.setBounds(polyline.geometry.getBounds(), { checkZoomRange: true, zoomMargin: 30 });
+    } else if (points.length === 1) {
+        tmap.geoObjects.add(new ymaps.Placemark([points[0].lat, points[0].lng]));
+    }
+});
 JS);
     ?>
 <?php endif ?>

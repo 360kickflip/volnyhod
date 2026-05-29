@@ -201,15 +201,29 @@ volnyhod/
 'supportEmail'    => 'support@volnyhod.ru',
 'defaultDeposit'  => 2000.00,
 'defaultCenter'   => ['lat' => 55.7558, 'lng' => 37.6173],
-'yandexMapsApiKey' => '',  // вставьте при необходимости
+'yandexMapsApiKey' => '',  // см. ниже
 ```
+
+### 🗺 Яндекс.Карты — получение API ключа
+
+Карты на сайте используют **Yandex Maps JavaScript API**. Без ключа карта работает с ограничениями (могут быть водяные знаки и капчи).
+
+**Как получить ключ:**
+1. Зайти в [Кабинет разработчика Яндекса](https://developer.tech.yandex.ru/services/)
+2. Подключить тариф **JavaScript API и HTTP Геокодер** (для разработки — бесплатный free-тариф 25 000 запросов/день)
+3. Скопировать API-ключ
+4. Вписать его в `config/params.php`:
+   ```php
+   'yandexMapsApiKey' => 'ВАШ-API-КЛЮЧ',
+   ```
+   Либо через админку: `/admin/setting?group=maps` → поле «Яндекс.Карты API ключ»
 
 ### Платежи
 Демо-режим: пополнение баланса засчитывается мгновенно (см. `models/forms/TopUpForm::process()`).
 Для интеграции с **ЮKassa** или **Robokassa** заполните настройки в админке `/admin/setting?group=payment` и расширьте `TopUpForm`.
 
 ### Карты
-По умолчанию используется Leaflet + OpenStreetMap (без API-ключа). Чтобы переключиться на Яндекс.Карты — поставьте `yandexMapsApiKey` в настройках и поправьте JS в `views/map/index.php`.
+Используется **Yandex Maps JavaScript API**. Получите бесплатный ключ на [developer.tech.yandex.ru](https://developer.tech.yandex.ru/services/) и впишите в `config/params.php` (`yandexMapsApiKey`) либо в админке `/admin/setting?group=maps`.
 
 ---
 

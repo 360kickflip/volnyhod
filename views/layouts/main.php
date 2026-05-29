@@ -24,6 +24,7 @@ $activeBooking = $user ? $user->getActiveBooking()->one() : null;
 $navItems = [
     ['label' => 'Каталог', 'url' => ['/car/index'], 'icon' => 'fa-list', 'active' => Yii::$app->controller->id === 'car'],
     ['label' => 'Карта', 'url' => ['/map/index'], 'icon' => 'fa-map-location-dot', 'active' => Yii::$app->controller->id === 'map'],
+    ['label' => 'Тарифы', 'url' => ['/tariff/index'], 'icon' => 'fa-tags', 'active' => Yii::$app->controller->id === 'tariff'],
     ['label' => 'Мои поездки', 'url' => ['/trip/index'], 'icon' => 'fa-route', 'active' => Yii::$app->controller->id === 'trip'],
 ];
 ?>
@@ -107,10 +108,10 @@ $navItems = [
                 </div>
             <?php else: ?>
                 <nav class="vh-nav d-none d-md-flex flex-grow-1">
-                    <a href="<?= Url::to(['/car/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-list"></i>Каталог</a>
-                    <a href="<?= Url::to(['/map/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-map-location-dot"></i>Карта</a>
-                    <a href="<?= Url::to(['/page/view', 'slug' => 'tariffs-info']) ?>" class="vh-nav__link"><i class="fa-solid fa-tags"></i>Тарифы</a>
-                    <a href="<?= Url::to(['/faq/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-circle-question"></i>FAQ</a>
+                    <a href="<?= Url::to(['/car/index']) ?>" class="vh-nav__link <?= Yii::$app->controller->id === 'car' ? 'is-active' : '' ?>"><i class="fa-solid fa-list"></i>Каталог</a>
+                    <a href="<?= Url::to(['/map/index']) ?>" class="vh-nav__link <?= Yii::$app->controller->id === 'map' ? 'is-active' : '' ?>"><i class="fa-solid fa-map-location-dot"></i>Карта</a>
+                    <a href="<?= Url::to(['/tariff/index']) ?>" class="vh-nav__link <?= Yii::$app->controller->id === 'tariff' ? 'is-active' : '' ?>"><i class="fa-solid fa-tags"></i>Тарифы</a>
+                    <a href="<?= Url::to(['/faq/index']) ?>" class="vh-nav__link <?= Yii::$app->controller->id === 'faq' ? 'is-active' : '' ?>"><i class="fa-solid fa-circle-question"></i>FAQ</a>
                 </nav>
                 <div class="d-flex align-items-center gap-2 ms-auto">
                     <a href="<?= Url::to(['/site/login']) ?>" class="btn btn-soft d-none d-sm-inline-flex">Войти</a>
@@ -170,22 +171,34 @@ $navItems = [
 <footer class="vh-footer">
     <div class="container-xl">
         <div class="row gy-4">
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-6">
                 <a href="<?= Url::home() ?>" class="vh-brand text-white mb-3 d-inline-flex">
                     <span class="vh-brand__logo"><i class="fa-solid fa-road"></i></span>
                     <span>Вольный Ход</span>
                 </a>
-                <p class="small mb-0">Каршеринг нового поколения. Свобода передвижения в каждом километре.</p>
+                <p class="small mb-3" style="color: rgba(255,255,255,.65);">Каршеринг нового поколения. Свобода передвижения в каждом километре.</p>
+                <div class="d-flex gap-2">
+                    <a href="#" class="d-inline-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:10px;color:#fff;" title="VK"><i class="fa-brands fa-vk"></i></a>
+                    <a href="#" class="d-inline-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:10px;color:#fff;" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="#" class="d-inline-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:10px;color:#fff;" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
             </div>
-            <div class="col-md-2 col-6">
+            <div class="col-lg-2 col-md-6 col-6">
                 <h6>Сервис</h6>
                 <ul>
                     <li><a href="<?= Url::to(['/car/index']) ?>">Каталог</a></li>
                     <li><a href="<?= Url::to(['/map/index']) ?>">Карта</a></li>
-                    <li><a href="<?= Url::to(['/page/view', 'slug' => 'tariffs-info']) ?>">Тарифы</a></li>
+                    <li><a href="<?= Url::to(['/tariff/index']) ?>">Тарифы</a></li>
+                    <?php if (Yii::$app->user->isGuest): ?>
+                        <li><a href="<?= Url::to(['/site/signup']) ?>">Регистрация</a></li>
+                        <li><a href="<?= Url::to(['/site/login']) ?>">Вход</a></li>
+                    <?php else: ?>
+                        <li><a href="<?= Url::to(['/trip/index']) ?>">Мои поездки</a></li>
+                        <li><a href="<?= Url::to(['/balance/index']) ?>">Баланс</a></li>
+                    <?php endif ?>
                 </ul>
             </div>
-            <div class="col-md-2 col-6">
+            <div class="col-lg-2 col-md-6 col-6">
                 <h6>Помощь</h6>
                 <ul>
                     <li><a href="<?= Url::to(['/faq/index']) ?>">FAQ</a></li>
@@ -194,11 +207,30 @@ $navItems = [
                     <li><a href="<?= Url::to(['/page/view', 'slug' => 'privacy']) ?>">Политика</a></li>
                 </ul>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-6">
                 <h6>Контакты</h6>
-                <ul>
-                    <li><i class="fa-solid fa-phone me-2"></i> <?= Yii::$app->params['supportPhone'] ?></li>
-                    <li><i class="fa-solid fa-envelope me-2"></i> <?= Yii::$app->params['supportEmail'] ?></li>
+                <ul class="m-0">
+                    <li class="d-flex align-items-start gap-2 mb-3">
+                        <i class="fa-solid fa-phone mt-1" style="color: var(--vh-primary);"></i>
+                        <div>
+                            <a href="tel:<?= preg_replace('/[^+\d]/', '', Yii::$app->params['supportPhone']) ?>" class="d-block fw-semibold" style="color:#fff;"><?= Yii::$app->params['supportPhone'] ?></a>
+                            <small style="color: rgba(255,255,255,.55);">Поддержка 24/7</small>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-start gap-2 mb-3">
+                        <i class="fa-solid fa-envelope mt-1" style="color: var(--vh-primary);"></i>
+                        <div>
+                            <a href="mailto:<?= Yii::$app->params['supportEmail'] ?>" class="d-block fw-semibold" style="color:#fff;"><?= Yii::$app->params['supportEmail'] ?></a>
+                            <small style="color: rgba(255,255,255,.55);">Ответим в течение часа</small>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-start gap-2">
+                        <i class="fa-solid fa-location-dot mt-1" style="color: var(--vh-primary);"></i>
+                        <div>
+                            <span class="fw-semibold" style="color:#fff;">Москва, ул. Тверская, 1</span><br>
+                            <small style="color: rgba(255,255,255,.55);">Пн–Пт: 9:00–20:00</small>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
