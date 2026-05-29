@@ -137,4 +137,20 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    public function actionContacts()
+    {
+        $form = null;
+        if (!Yii::$app->user->isGuest) {
+            $form = new \app\models\forms\SupportTicketForm();
+            if ($form->load(Yii::$app->request->post())) {
+                $ticket = $form->create(Yii::$app->user->identity);
+                if ($ticket) {
+                    Yii::$app->session->setFlash('success', 'Спасибо! Обращение № ' . $ticket->number . ' создано — ответим в течение часа.');
+                    return $this->redirect(['/support/view', 'id' => $ticket->id]);
+                }
+            }
+        }
+        return $this->render('contacts', ['form' => $form]);
+    }
 }

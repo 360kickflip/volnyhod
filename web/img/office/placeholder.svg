@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#e2e8f0" rx="16"/>
+  <rect x="100" y="200" width="600" height="280" fill="#cbd5e1"/>
+  <polygon points="400,80 80,220 720,220" fill="#94a3b8"/>
+  <rect x="200" y="280" width="80" height="120" fill="#64748b"/>
+  <rect x="360" y="260" width="100" height="100" fill="#475569"/>
+  <rect x="540" y="280" width="80" height="120" fill="#64748b"/>
+  <text x="400" y="450" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#475569" font-weight="600">Замените на фото офиса · web/img/office/hq.jpg</text>
+</svg>

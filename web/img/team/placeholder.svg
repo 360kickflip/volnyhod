@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <rect width="240" height="240" fill="#f1f5f9" rx="16"/>
+  <circle cx="120" cy="92" r="38" fill="#cbd5e1"/>
+  <path d="M50 220c0-40 32-72 70-72s70 32 70 72v20H50z" fill="#cbd5e1"/>
+  <text x="120" y="200" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#64748b" font-weight="600">фото команды</text>
+</svg>

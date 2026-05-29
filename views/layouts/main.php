@@ -191,12 +191,12 @@ $navItems = [
                     <li><a href="<?= Url::to(['/car/index']) ?>">Каталог</a></li>
                     <li><a href="<?= Url::to(['/map/index']) ?>">Карта</a></li>
                     <li><a href="<?= Url::to(['/tariff/index']) ?>">Тарифы</a></li>
+                    <li><a href="<?= Url::to(['/site/about']) ?>">О компании</a></li>
+                    <li><a href="<?= Url::to(['/site/contacts']) ?>">Контакты</a></li>
                     <?php if (Yii::$app->user->isGuest): ?>
                         <li><a href="<?= Url::to(['/site/signup']) ?>">Регистрация</a></li>
-                        <li><a href="<?= Url::to(['/site/login']) ?>">Вход</a></li>
                     <?php else: ?>
                         <li><a href="<?= Url::to(['/trip/index']) ?>">Мои поездки</a></li>
-                        <li><a href="<?= Url::to(['/balance/index']) ?>">Баланс</a></li>
                     <?php endif ?>
                 </ul>
             </div>
