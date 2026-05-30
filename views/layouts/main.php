@@ -39,6 +39,11 @@ $navItems = [
     ['label' => 'Тарифы', 'url' => ['/tariff/index'], 'icon' => 'fa-tags', 'active' => Yii::$app->controller->id === 'tariff'],
     ['label' => 'Мои поездки', 'url' => ['/trip/index'], 'icon' => 'fa-route', 'active' => Yii::$app->controller->id === 'trip'],
 ];
+
+$infoItems = [
+    ['label' => 'О компании', 'url' => ['/site/about'], 'icon' => 'fa-building', 'active' => Yii::$app->controller->action->id === 'about'],
+    ['label' => 'Контакты', 'url' => ['/site/contacts'], 'icon' => 'fa-address-book', 'active' => Yii::$app->controller->action->id === 'contacts'],
+];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -68,6 +73,19 @@ $navItems = [
                             <i class="fa-solid <?= $item['icon'] ?>"></i><?= $item['label'] ?>
                         </a>
                     <?php endforeach ?>
+                    <div class="dropdown">
+                        <a href="#" class="vh-nav__link <?= ($infoItems[0]['active'] || $infoItems[1]['active']) ? 'is-active' : '' ?>" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-circle-info"></i>Информация
+                            <i class="fa-solid fa-chevron-down small ms-1" style="font-size: 10px;"></i>
+                        </a>
+                        <ul class="dropdown-menu vh-dropdown">
+                            <?php foreach ($infoItems as $info): ?>
+                                <li><a class="dropdown-item" href="<?= Url::toRoute($info['url']) ?>"><i class="fa-solid <?= $info['icon'] ?>"></i><?= $info['label'] ?></a></li>
+                            <?php endforeach ?>
+                            <li><a class="dropdown-item" href="<?= Url::to(['/faq/index']) ?>"><i class="fa-solid fa-circle-question"></i>FAQ</a></li>
+                            <li><a class="dropdown-item" href="<?= Url::to(['/support/index']) ?>"><i class="fa-solid fa-life-ring"></i>Поддержка</a></li>
+                        </ul>
+                    </div>
                 </nav>
 
                 <div class="d-flex align-items-center gap-2 ms-auto">
@@ -129,7 +147,18 @@ $navItems = [
                     <a href="<?= Url::to(['/car/index']) ?>" class="vh-nav__link <?= Yii::$app->controller->id === 'car' ? 'is-active' : '' ?>"><i class="fa-solid fa-list"></i>Каталог</a>
                     <a href="<?= Url::to(['/map/index']) ?>" class="vh-nav__link <?= Yii::$app->controller->id === 'map' ? 'is-active' : '' ?>"><i class="fa-solid fa-map-location-dot"></i>Карта</a>
                     <a href="<?= Url::to(['/tariff/index']) ?>" class="vh-nav__link <?= Yii::$app->controller->id === 'tariff' ? 'is-active' : '' ?>"><i class="fa-solid fa-tags"></i>Тарифы</a>
-                    <a href="<?= Url::to(['/faq/index']) ?>" class="vh-nav__link <?= Yii::$app->controller->id === 'faq' ? 'is-active' : '' ?>"><i class="fa-solid fa-circle-question"></i>FAQ</a>
+                    <div class="dropdown">
+                        <a href="#" class="vh-nav__link <?= ($infoItems[0]['active'] || $infoItems[1]['active']) ? 'is-active' : '' ?>" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-circle-info"></i>Информация
+                            <i class="fa-solid fa-chevron-down small ms-1" style="font-size: 10px;"></i>
+                        </a>
+                        <ul class="dropdown-menu vh-dropdown">
+                            <?php foreach ($infoItems as $info): ?>
+                                <li><a class="dropdown-item" href="<?= Url::toRoute($info['url']) ?>"><i class="fa-solid <?= $info['icon'] ?>"></i><?= $info['label'] ?></a></li>
+                            <?php endforeach ?>
+                            <li><a class="dropdown-item" href="<?= Url::to(['/faq/index']) ?>"><i class="fa-solid fa-circle-question"></i>FAQ</a></li>
+                        </ul>
+                    </div>
                 </nav>
                 <div class="d-flex align-items-center gap-2 ms-auto">
                     <button type="button" class="vh-theme-toggle" data-theme-toggle title="Переключить тему" aria-label="Переключить тему">
@@ -163,6 +192,10 @@ $navItems = [
             <a href="<?= Url::to(['/notification/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-bell"></i>Уведомления <?php if ($unread): ?><span class="badge bg-danger ms-auto"><?= $unread ?></span><?php endif ?></a>
             <a href="<?= Url::to(['/support/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-life-ring"></i>Поддержка</a>
             <a href="<?= Url::to(['/profile/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-user"></i>Профиль</a>
+            <hr class="my-1">
+            <?php foreach ($infoItems as $info): ?>
+                <a href="<?= Url::toRoute($info['url']) ?>" class="vh-nav__link <?= $info['active'] ? 'is-active' : '' ?>"><i class="fa-solid <?= $info['icon'] ?>"></i><?= $info['label'] ?></a>
+            <?php endforeach ?>
             <a href="<?= Url::to(['/faq/index']) ?>" class="vh-nav__link"><i class="fa-solid fa-circle-question"></i>FAQ</a>
         </div>
     </div>
