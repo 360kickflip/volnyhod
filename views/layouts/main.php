@@ -21,6 +21,18 @@ $user = Yii::$app->user->isGuest ? null : Yii::$app->user->identity;
 $unread = $user ? $user->getUnreadNotificationsCount() : 0;
 $activeBooking = $user ? $user->getActiveBooking()->one() : null;
 
+// Inline-скрипт устанавливает тему ДО рендера body — без вспышки белого
+$themeScript = <<<'JS'
+(function() {
+    try {
+        var t = localStorage.getItem('vh_theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+    } catch(e) {}
+})();
+JS;
+$this->registerJs($themeScript, \yii\web\View::POS_HEAD);
+
 $navItems = [
     ['label' => 'Каталог', 'url' => ['/car/index'], 'icon' => 'fa-list', 'active' => Yii::$app->controller->id === 'car'],
     ['label' => 'Карта', 'url' => ['/map/index'], 'icon' => 'fa-map-location-dot', 'active' => Yii::$app->controller->id === 'map'],
@@ -71,6 +83,11 @@ $navItems = [
                         <?php endif ?>
                     </a>
 
+                    <button type="button" class="vh-theme-toggle" data-theme-toggle title="Переключить тему" aria-label="Переключить тему">
+                        <i class="fa-solid fa-sun icon-sun"></i>
+                        <i class="fa-solid fa-moon icon-moon"></i>
+                    </button>
+
                     <div class="dropdown">
                         <div class="vh-avatar" data-bs-toggle="dropdown" aria-expanded="false">
                             <?php if ($user->avatar): ?>
@@ -115,6 +132,10 @@ $navItems = [
                     <a href="<?= Url::to(['/faq/index']) ?>" class="vh-nav__link <?= Yii::$app->controller->id === 'faq' ? 'is-active' : '' ?>"><i class="fa-solid fa-circle-question"></i>FAQ</a>
                 </nav>
                 <div class="d-flex align-items-center gap-2 ms-auto">
+                    <button type="button" class="vh-theme-toggle" data-theme-toggle title="Переключить тему" aria-label="Переключить тему">
+                        <i class="fa-solid fa-sun icon-sun"></i>
+                        <i class="fa-solid fa-moon icon-moon"></i>
+                    </button>
                     <a href="<?= Url::to(['/site/login']) ?>" class="btn btn-soft d-none d-sm-inline-flex">Войти</a>
                     <a href="<?= Url::to(['/site/signup']) ?>" class="btn btn-primary">Регистрация</a>
                 </div>

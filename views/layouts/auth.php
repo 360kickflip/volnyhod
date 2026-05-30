@@ -12,6 +12,17 @@ $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/svg+xml', 'href' => Yii::getAlias('@web/img/logo.svg')]);
+
+$themeScript = <<<'JS'
+(function() {
+    try {
+        var t = localStorage.getItem('vh_theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+    } catch(e) {}
+})();
+JS;
+$this->registerJs($themeScript, \yii\web\View::POS_HEAD);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

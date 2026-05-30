@@ -153,3 +153,48 @@
         });
     });
 })();
+
+
+
+/* ==========================================================================
+   THEME TOGGLE (light / dark)
+   ========================================================================== */
+(function () {
+    'use strict';
+    const KEY = 'vh_theme';
+
+    function getTheme() {
+        try { return localStorage.getItem(KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+        catch (e) { return 'light'; }
+    }
+    function setTheme(theme) {
+        document.documentElement.classList.add('vh-theme-transition');
+        document.documentElement.setAttribute('data-theme', theme);
+        try { localStorage.setItem(KEY, theme); } catch (e) {}
+        clearTimeout(window.__themeTransitionTimer);
+        window.__themeTransitionTimer = setTimeout(() => {
+            document.documentElement.classList.remove('vh-theme-transition');
+        }, 400);
+        // Событие для других модулей (например, перерисовать карты)
+        window.dispatchEvent(new CustomEvent('vh:theme-change', { detail: { theme } }));
+    }
+
+    // Делегированный обработчик клика на кнопку
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('[data-theme-toggle]');
+        if (!btn) return;
+        const current = document.documentElement.getAttribute('data-theme') || getTheme();
+        setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    // Реакция на смену системной темы (если пользователь не выбрал явно)
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            try {
+                if (!localStorage.getItem(KEY)) {
+                    setTheme(e.matches ? 'dark' : 'light');
+                }
+            } catch (err) {}
+        });
+    }
+})();

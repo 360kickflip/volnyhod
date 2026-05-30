@@ -19,6 +19,18 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/svg+xml', 'href' => Yi
 $user = Yii::$app->user->identity;
 $ctrl = Yii::$app->controller->id;
 
+// Inline-скрипт для темы (без вспышки)
+$themeScript = <<<'JS'
+(function() {
+    try {
+        var t = localStorage.getItem('vh_theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+    } catch(e) {}
+})();
+JS;
+$this->registerJs($themeScript, \yii\web\View::POS_HEAD);
+
 // Бейджи для меню
 $openTickets = SupportTicket::find()->where(['status' => [SupportTicket::STATUS_OPEN, SupportTicket::STATUS_IN_PROGRESS]])->count();
 $pendingDamages = DamageReport::find()->where(['status' => [DamageReport::STATUS_REPORTED, DamageReport::STATUS_REVIEWING]])->count();
@@ -98,7 +110,12 @@ $menu = [
                 <h2 class="admin-page-title"><?= Html::encode($this->title ?: 'Админ-панель') ?></h2>
             </div>
 
-            <div class="dropdown">
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="vh-theme-toggle" data-theme-toggle title="Переключить тему" aria-label="Переключить тему">
+                    <i class="fa-solid fa-sun icon-sun"></i>
+                    <i class="fa-solid fa-moon icon-moon"></i>
+                </button>
+                <div class="dropdown">
                 <button class="btn btn-soft d-flex align-items-center gap-2" data-bs-toggle="dropdown">
                     <span class="vh-avatar" style="width:32px;height:32px;font-size:12px;"><?= Html::encode($user->getInitials()) ?></span>
                     <span class="d-none d-md-inline"><?= Html::encode($user->name ?: $user->email) ?></span>
@@ -114,6 +131,7 @@ $menu = [
                         <?= Html::endForm() ?>
                     </li>
                 </ul>
+            </div>
             </div>
         </header>
 

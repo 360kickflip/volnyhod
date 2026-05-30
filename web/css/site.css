@@ -849,3 +849,273 @@ label.required::after, .required-mark { content: ' *'; color: var(--vh-danger); 
     box-shadow: 0 8px 24px rgba(var(--vh-primary-rgb), .35);
 }
 .vh-ref-banner i { font-size: 1.5rem; }
+
+
+
+/* ==========================================================================
+   DARK THEME
+   ========================================================================== */
+:root {
+    color-scheme: light;
+    --vh-bg-image: none;
+}
+
+html[data-theme="dark"] {
+    color-scheme: dark;
+
+    /* Override design tokens */
+    --vh-bg: #0a1628;
+    --vh-surface: #15233f;
+    --vh-border: #243757;
+    --vh-border-soft: #1c2d4a;
+    --vh-muted: #94a3b8;
+    --vh-text: #e2e8f0;
+    --vh-text-soft: #cbd5e1;
+
+    --vh-primary-light: rgba(0, 200, 150, .15);
+
+    --vh-shadow-sm: 0 1px 2px rgba(0, 0, 0, .25), 0 1px 3px rgba(0, 0, 0, .2);
+    --vh-shadow:    0 4px 12px rgba(0, 0, 0, .35), 0 2px 4px rgba(0, 0, 0, .25);
+    --vh-shadow-lg: 0 12px 32px rgba(0, 0, 0, .45), 0 4px 12px rgba(0, 0, 0, .3);
+
+    /* Bootstrap overrides */
+    --bs-body-bg: var(--vh-bg);
+    --bs-body-color: var(--vh-text);
+    --bs-secondary-bg: #1c2d4a;
+    --bs-tertiary-bg: #1c2d4a;
+    --bs-border-color: var(--vh-border);
+    --bs-emphasis-color: var(--vh-text);
+}
+
+html[data-theme="dark"] body { background: var(--vh-bg); color: var(--vh-text); }
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6 { color: var(--vh-text); }
+
+/* Header */
+html[data-theme="dark"] .vh-header {
+    background: rgba(15, 25, 47, 0.85);
+    border-bottom-color: var(--vh-border);
+}
+html[data-theme="dark"] .vh-brand { color: var(--vh-text); }
+html[data-theme="dark"] .vh-brand:hover { color: var(--vh-text); }
+html[data-theme="dark"] .vh-nav__link { color: var(--vh-text-soft); }
+html[data-theme="dark"] .vh-nav__link:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+html[data-theme="dark"] .vh-nav__link.is-active { background: rgba(0, 200, 150, .18); color: #6ee7c7; }
+html[data-theme="dark"] .vh-bell { color: var(--vh-text-soft); }
+html[data-theme="dark"] .vh-bell:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+html[data-theme="dark"] .vh-balance-pill { background: rgba(0, 200, 150, .15); color: #6ee7c7; border-color: rgba(0, 200, 150, .35); }
+html[data-theme="dark"] .vh-mobile-toggle { color: var(--vh-text); }
+
+/* Cards / surfaces */
+html[data-theme="dark"] .card {
+    background: var(--vh-surface);
+    border-color: var(--vh-border);
+    color: var(--vh-text);
+}
+html[data-theme="dark"] .card-header { border-bottom-color: var(--vh-border-soft); }
+html[data-theme="dark"] .card-footer { background: transparent; border-top-color: var(--vh-border); }
+
+html[data-theme="dark"] .vh-stat { background: var(--vh-surface); border-color: var(--vh-border); }
+html[data-theme="dark"] .vh-stat__value { color: var(--vh-text); }
+
+/* Tables */
+html[data-theme="dark"] .table { color: var(--vh-text); --bs-table-bg: transparent; }
+html[data-theme="dark"] .table thead th {
+    background: rgba(255, 255, 255, .04);
+    color: var(--vh-muted);
+    border-bottom-color: var(--vh-border);
+}
+html[data-theme="dark"] .table tbody tr { border-bottom-color: var(--vh-border-soft); }
+html[data-theme="dark"] .table-hover tbody tr:hover { background: rgba(255, 255, 255, .03); }
+html[data-theme="dark"] .table-card-wrap { background: var(--vh-surface); border-color: var(--vh-border); }
+
+/* Forms */
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select {
+    background: rgba(255, 255, 255, .04);
+    border-color: var(--vh-border);
+    color: var(--vh-text);
+}
+html[data-theme="dark"] .form-control::placeholder { color: var(--vh-muted); }
+html[data-theme="dark"] .form-control:focus,
+html[data-theme="dark"] .form-select:focus {
+    background: rgba(255, 255, 255, .06);
+    border-color: var(--vh-primary);
+    color: var(--vh-text);
+}
+html[data-theme="dark"] .form-label { color: var(--vh-text); }
+html[data-theme="dark"] .form-check-input { background-color: rgba(255, 255, 255, .1); border-color: var(--vh-border); }
+html[data-theme="dark"] .form-check-input:checked { background-color: var(--vh-primary); border-color: var(--vh-primary); }
+html[data-theme="dark"] .input-group-text { background: rgba(255, 255, 255, .04); border-color: var(--vh-border); color: var(--vh-muted); }
+
+/* Buttons */
+html[data-theme="dark"] .btn-soft { background: rgba(255, 255, 255, .06); color: var(--vh-text); }
+html[data-theme="dark"] .btn-soft:hover { background: rgba(255, 255, 255, .1); color: var(--vh-text); }
+html[data-theme="dark"] .btn-light { background: rgba(255, 255, 255, .85); color: #0a1628; }
+html[data-theme="dark"] .btn-outline-light { color: var(--vh-text); border-color: rgba(255, 255, 255, .2); }
+html[data-theme="dark"] .btn-outline-light:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+html[data-theme="dark"] .btn-outline-primary { color: #6ee7c7; border-color: rgba(0, 200, 150, .4); }
+html[data-theme="dark"] .btn-outline-primary:hover { background: var(--vh-primary); color: #0a1628; }
+html[data-theme="dark"] .btn-close { filter: invert(1) grayscale(100%) brightness(2); }
+
+/* Modal */
+html[data-theme="dark"] .modal-content { background: var(--vh-surface); color: var(--vh-text); }
+html[data-theme="dark"] .modal-header { border-bottom-color: var(--vh-border); }
+html[data-theme="dark"] .modal-footer { border-top-color: var(--vh-border); }
+
+/* Dropdown */
+html[data-theme="dark"] .dropdown-menu { background: var(--vh-surface); border-color: var(--vh-border); }
+html[data-theme="dark"] .dropdown-item { color: var(--vh-text); }
+html[data-theme="dark"] .dropdown-item:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+html[data-theme="dark"] .dropdown-divider { border-color: var(--vh-border); }
+html[data-theme="dark"] .vh-dropdown .dropdown-item { color: var(--vh-text); }
+html[data-theme="dark"] .vh-dropdown .dropdown-item i { color: var(--vh-muted); }
+
+/* Tabs */
+html[data-theme="dark"] .vh-tabs { background: rgba(255, 255, 255, .04); }
+html[data-theme="dark"] .vh-tabs .nav-link { color: var(--vh-text-soft); }
+html[data-theme="dark"] .vh-tabs .nav-link.active { background: var(--vh-surface); color: var(--vh-text); }
+
+/* Alerts */
+html[data-theme="dark"] .alert-success { background: rgba(16, 185, 129, .15); color: #6ee7c7; }
+html[data-theme="dark"] .alert-info { background: rgba(59, 130, 246, .15); color: #93c5fd; }
+html[data-theme="dark"] .alert-warning { background: rgba(245, 158, 11, .15); color: #fcd34d; }
+html[data-theme="dark"] .alert-danger { background: rgba(239, 68, 68, .15); color: #fca5a5; }
+
+/* Badges */
+html[data-theme="dark"] .badge.bg-secondary { background: rgba(255, 255, 255, .12) !important; color: #cbd5e1 !important; }
+
+/* Cars / Catalog */
+html[data-theme="dark"] .car-card { background: var(--vh-surface); border-color: var(--vh-border); }
+html[data-theme="dark"] .car-card__media { background: linear-gradient(135deg, #1c2d4a, #15233f); }
+html[data-theme="dark"] .car-card__title { color: var(--vh-text); }
+html[data-theme="dark"] .car-card__plate { color: var(--vh-muted); }
+html[data-theme="dark"] .car-card__features { color: var(--vh-text-soft); }
+html[data-theme="dark"] .car-card__price .num { color: var(--vh-text); }
+html[data-theme="dark"] .car-card__tariff { background: rgba(0, 0, 0, .65); color: #fff; }
+
+/* Profile / Active rental */
+html[data-theme="dark"] .car-stat { background: rgba(255, 255, 255, .04); }
+html[data-theme="dark"] .car-stat__icon { background: var(--vh-surface); color: var(--vh-text-soft); }
+html[data-theme="dark"] .car-stat__label { color: var(--vh-muted); }
+html[data-theme="dark"] .rental-timer { color: var(--vh-text); }
+
+/* Notifications */
+html[data-theme="dark"] .notif { background: var(--vh-surface); border-color: var(--vh-border); }
+html[data-theme="dark"] .notif--unread { background: linear-gradient(90deg, rgba(0, 200, 150, .08), var(--vh-surface) 50%); }
+html[data-theme="dark"] .notif__icon { background: rgba(255, 255, 255, .04); }
+html[data-theme="dark"] .notif__title { color: var(--vh-text); }
+html[data-theme="dark"] .notif__msg { color: var(--vh-text-soft); }
+
+/* Accordion */
+html[data-theme="dark"] .accordion-item { background: var(--vh-surface); border-color: var(--vh-border); }
+html[data-theme="dark"] .accordion-button { background: var(--vh-surface); color: var(--vh-text); }
+html[data-theme="dark"] .accordion-button:not(.collapsed) { background: rgba(0, 200, 150, .12); color: #6ee7c7; }
+html[data-theme="dark"] .accordion-button::after { filter: invert(1) brightness(0.8); }
+html[data-theme="dark"] .accordion-body { color: var(--vh-text-soft); background: var(--vh-surface); }
+
+/* Chat */
+html[data-theme="dark"] .chat-msg__avatar { background: rgba(255, 255, 255, .08); }
+html[data-theme="dark"] .chat-msg__bubble { background: rgba(255, 255, 255, .06); color: var(--vh-text); }
+html[data-theme="dark"] .chat-msg--mine .chat-msg__bubble { background: rgba(0, 200, 150, .18); color: #6ee7c7; }
+
+/* Verification */
+html[data-theme="dark"] .verify-pill--verified { background: rgba(16, 185, 129, .2); color: #6ee7c7; }
+html[data-theme="dark"] .verify-pill--pending { background: rgba(245, 158, 11, .2); color: #fcd34d; }
+html[data-theme="dark"] .verify-pill--rejected { background: rgba(239, 68, 68, .2); color: #fca5a5; }
+html[data-theme="dark"] .verify-pill--none { background: rgba(255, 255, 255, .06); color: var(--vh-muted); }
+
+/* Auth split */
+html[data-theme="dark"] .auth-wrap { background: var(--vh-bg); }
+html[data-theme="dark"] .auth-card { color: var(--vh-text); }
+
+/* Cookie banner */
+html[data-theme="dark"] .vh-cookie-banner { background: var(--vh-surface); border-color: var(--vh-border); }
+html[data-theme="dark"] .vh-cookie-cat { background: var(--vh-surface); border-color: var(--vh-border); }
+
+/* Empty state */
+html[data-theme="dark"] .empty__icon { background: rgba(255, 255, 255, .04); color: var(--vh-muted); }
+html[data-theme="dark"] .empty h4 { color: var(--vh-text); }
+
+/* Pagination */
+html[data-theme="dark"] .pagination .page-link { background: var(--vh-surface); color: var(--vh-text-soft); border-color: var(--vh-border); }
+html[data-theme="dark"] .pagination .page-link:hover { background: rgba(255, 255, 255, .06); }
+html[data-theme="dark"] .pagination .page-item.disabled .page-link { background: var(--vh-surface); color: var(--vh-muted); }
+
+/* Breadcrumb */
+html[data-theme="dark"] .breadcrumb-item { color: var(--vh-text-soft); }
+html[data-theme="dark"] .breadcrumb-item.active { color: var(--vh-muted); }
+html[data-theme="dark"] .breadcrumb-item + .breadcrumb-item::before { color: var(--vh-muted); }
+
+/* Legal pages */
+html[data-theme="dark"] .legal-content blockquote { background: rgba(0, 200, 150, .08); }
+html[data-theme="dark"] .legal-content table th { background: rgba(255, 255, 255, .04); }
+html[data-theme="dark"] .legal-content table tr:nth-child(even) td { background: rgba(255, 255, 255, .02); }
+html[data-theme="dark"] .legal-content table th,
+html[data-theme="dark"] .legal-content table td { border-color: var(--vh-border); }
+html[data-theme="dark"] .legal-toc { background: var(--vh-surface); border-color: var(--vh-border); }
+
+/* Timeline */
+html[data-theme="dark"] .vh-timeline { border-left-color: var(--vh-border); }
+html[data-theme="dark"] .vh-timeline__item::before { border-color: var(--vh-bg); }
+html[data-theme="dark"] .vh-timeline__content { background: var(--vh-surface); border-color: var(--vh-border); }
+html[data-theme="dark"] .vh-step { background: var(--vh-surface); border-color: var(--vh-border); }
+
+/* Bg-soft helper */
+html[data-theme="dark"] .bg-soft { background: rgba(255, 255, 255, .04) !important; }
+
+/* Hero remains dark in both themes — no override needed */
+
+/* Soft text */
+html[data-theme="dark"] .text-soft { color: var(--vh-text-soft) !important; }
+html[data-theme="dark"] .text-muted { color: var(--vh-muted) !important; }
+html[data-theme="dark"] code { color: #f9a8d4; background: rgba(255, 255, 255, .04); padding: 2px 6px; border-radius: 4px; }
+
+/* Theme toggle button */
+.vh-theme-toggle {
+    width: 42px; height: 42px; border-radius: 12px;
+    border: 0; background: transparent;
+    color: var(--vh-text-soft); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all .2s ease;
+    position: relative;
+}
+.vh-theme-toggle:hover { background: var(--vh-border-soft); color: var(--vh-text); }
+.vh-theme-toggle .icon-sun, .vh-theme-toggle .icon-moon {
+    transition: transform .35s ease, opacity .25s ease;
+    position: absolute;
+}
+html[data-theme="light"] .vh-theme-toggle .icon-sun,
+html:not([data-theme="dark"]) .vh-theme-toggle .icon-sun { opacity: 1; transform: rotate(0); }
+html[data-theme="light"] .vh-theme-toggle .icon-moon,
+html:not([data-theme="dark"]) .vh-theme-toggle .icon-moon { opacity: 0; transform: rotate(90deg) scale(.5); }
+html[data-theme="dark"] .vh-theme-toggle .icon-sun { opacity: 0; transform: rotate(-90deg) scale(.5); }
+html[data-theme="dark"] .vh-theme-toggle .icon-moon { opacity: 1; transform: rotate(0); }
+
+/* Smooth transition on theme change */
+html.vh-theme-transition,
+html.vh-theme-transition *,
+html.vh-theme-transition *::before,
+html.vh-theme-transition *::after {
+    transition: background-color .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease !important;
+}
+
+/* Admin sidebar остаётся тёмным в обеих темах — это окей */
+html[data-theme="dark"] .admin-topbar { background: var(--vh-surface); border-bottom-color: var(--vh-border); }
+html[data-theme="dark"] .admin-page-title { color: var(--vh-text); }
+html[data-theme="dark"] .admin-layout { background: var(--vh-bg); }
+
+/* Search inputs */
+html[data-theme="dark"] input[type="search"]::-webkit-search-cancel-button { filter: invert(1); }
+
+/* Map containers (Yandex) — добавим контурный фрейм */
+html[data-theme="dark"] .vh-map { border-color: var(--vh-border); }
+
+/* Calendar inputs */
+html[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator,
+html[data-theme="dark"] input[type="datetime-local"]::-webkit-calendar-picker-indicator { filter: invert(1) brightness(0.8); }
